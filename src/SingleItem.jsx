@@ -1,10 +1,15 @@
+import { useDeleteTask, useEditTask } from './reactQueryCustomHooks'
+
 const SingleItem = ({ item }) => {
+  const { editTask } = useEditTask()
+  const { deleteTask, deleteTaskLoading } = useDeleteTask()
+
   return (
     <div className='single-item'>
       <input
         type='checkbox'
         checked={item.isDone}
-        onChange={() => console.log('edit task')}
+        onChange={() => editTask({ taskId: item.id, isDone: !item.isDone })}
       />
       <p
         style={{
@@ -17,11 +22,12 @@ const SingleItem = ({ item }) => {
       <button
         className='btn remove-btn'
         type='button'
-        onClick={() => console.log('delete task')}
+        disabled={deleteTaskLoading}
+        onClick={() => deleteTask({ taskId: item.id })}
       >
         delete
       </button>
     </div>
-  );
-};
-export default SingleItem;
+  )
+}
+export default SingleItem

@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import { useCreateTask } from './reactQueryCustomHooks'
 
 const Form = () => {
-  const [newItemName, setNewItemName] = useState('');
+  const [newItemName, setNewItemName] = useState('')
+  const { createTask, isLoading } = useCreateTask()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+    createTask(newItemName, {
+      onSuccess: () => {
+        setNewItemName('')
+      },
+    })
+  }
   return (
     <form onSubmit={handleSubmit}>
       <h4>task bud</h4>
@@ -16,11 +23,11 @@ const Form = () => {
           value={newItemName}
           onChange={(event) => setNewItemName(event.target.value)}
         />
-        <button type='submit' className='btn'>
+        <button type='submit' className='btn' disabled={isLoading}>
           add task
         </button>
       </div>
     </form>
-  );
-};
-export default Form;
+  )
+}
+export default Form
